@@ -1,0 +1,51 @@
+GDNA v17 UI modification validation
+===================================
+
+Requested UI changes
+--------------------
+1. Decode section now follows the source-noise comparison layout:
+   - Source bits / Source DNA selector
+   - Number of substitutions
+   - Random seed
+   - Injected substitutions
+   - Resulting source-bit errors
+   - media-specific affected-unit metrics
+   - Encoded Reference vs noisy reconstructed output
+   - Binary error mask for images
+   - source-bit-difference table and CSV export
+
+2. Stress Test now follows an Upload-Back workflow:
+   - step/action instruction table
+   - download clean full bitstream
+   - download clean full DNA
+   - Full bitstream / Full DNA selector
+   - upload externally modified TXT artifact
+   - run upload-back reconstruction
+   - substitution counts by critical / extended / source region
+   - recovery/reconstruction panels and difference CSV
+
+3. DNA base-composition and source-error-position charts remain absent.
+
+Static validation
+-----------------
+- python -m py_compile: PASS
+- Streamlit download_button calls with explicit keys: 23/23
+- duplicate download-button keys: none
+- matplotlib/st.pyplot: absent
+- UI sections retained: Overview / Encode / Decode / Stress Test / Analysis / Analysis Export
+
+Core logic checks
+-----------------
+- Binary1 image + 10 source-bit substitutions -> 10 resulting source-bit errors, 10 affected pixels: PASS
+- Binary1 image + 10 source-DNA substitutions -> local decoded source-bit corruption and reconstruction: PASS
+- Full-bitstream upload-back example with critical + extended + source flips -> critical recovery + extended DAMAGED + reconstruction: PASS
+- UTF-8 text source-bit substitutions -> openable reconstructed text: PASS
+- PCM16 audio source-bit substitutions -> openable reconstructed WAV: PASS
+
+Scientific scope retained
+-------------------------
+- substitution-only model
+- insertion/deletion/truncation are not synchronized
+- 144-bit recoverable Critical Header
+- 160-bit nonblocking Extended Metadata
+- primary canonical image/text/audio source

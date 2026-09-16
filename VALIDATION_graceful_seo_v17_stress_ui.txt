@@ -1,0 +1,28 @@
+GDNA v17 Stress-Test UI patch validation
+========================================
+
+Requested scope
+---------------
+- Encode panel: visible UI/logic retained.
+- Decode panel: visible UI/logic retained.
+- Stress Test changed to exactly two top-level modes:
+  1) Current bitstream/DNA from Encode
+  2) Upload bitstream/DNA from user
+- No separate "External Stress Test" section remains.
+- Stress-Test Reconstruction is rendered before Critical Header Recovery.
+- Image reconstruction remains one horizontal 3-column row:
+  Encoded Reference | Noisy/Reconstructed image | Binary error mask.
+- Stress-Test metadata tables use collapsed Streamlit expanders to reduce page height.
+- Uploaded-user mode accepts full bitstream or full DNA .txt artifacts and enforces equal length (substitution-only model).
+
+Widget-ID audit
+---------------
+- Python py_compile: PASS.
+- AST audit of interactive Streamlit widgets found 0 calls without explicit key= among:
+  text_area, download_button, file_uploader, radio, number_input, button,
+  selectbox, multiselect, text_input, slider.
+- render_media() now accepts an explicit key for text previews, preventing duplicate text_area IDs across Encode/Decode/Stress-Test sections.
+
+Runtime note
+------------
+The current validation container does not have Streamlit installed, so a full browser UI launch was not executed here.

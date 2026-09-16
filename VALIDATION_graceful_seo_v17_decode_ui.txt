@@ -1,0 +1,31 @@
+GDNA v17 Decode/Reconstruction UI patch validation
+===================================================
+
+Changes
+-------
+1. Image Decode/Reconstruction display now uses one 3-column horizontal row:
+   - Encoded Reference
+   - Reconstructed image / Noisy reconstructed image
+   - Binary error mask
+2. Decode upload modes now include:
+   - Source bits
+   - Source DNA
+   - Full bitstream
+   - Full DNA
+3. Source-only Decode uses the current encoded Critical Header and Extended Metadata,
+   while the uploaded source artifact supplies the potentially modified canonical source.
+4. Source-only upload is substitution-only: source length must remain unchanged.
+5. Existing Stress Test and media support (image/text/audio) are retained.
+
+Static validation
+-----------------
+Python py_compile: PASS
+3-column reconstruction UI present: PASS
+Source bits decode mode present: PASS
+Source DNA decode mode present: PASS
+Full bitstream/full DNA decode modes retained: PASS
+
+Runtime note
+------------
+Streamlit is not installed in the current validation container, so browser rendering
+was not launched here. The script compiles successfully.

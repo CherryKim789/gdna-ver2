@@ -1,0 +1,64 @@
+GDNA v17 validation summary
+===========================
+
+Static checks
+-------------
+- Python py_compile: PASS
+- Architecture preserved: 144-bit Critical Header + 160-bit Extended Metadata + primary canonical source
+- UI sections retained: Overview / Encode / Decode / Stress Test / Analysis / Analysis Export
+- No video profile or video upload support present
+- Matplotlib/pyplot charts absent
+- DNA Base Composition: table only
+- Source Error Positions: table only
+- All Streamlit download_button calls have explicit unique keys
+- Duplicate download-button key audit: PASS
+
+Core tests
+----------
+1. Image
+- synthetic 28 x 28 PNG
+- primary canonical image generated: PASS
+- clean full-bitstream decode: PASS
+- Critical Header recovery: UNIQUE
+- reconstructed PNG: PASS
+- decoded source bits == encoded canonical source bits: PASS
+
+2. Text
+- UTF-8 sample text
+- primary UTF-8 canonical source: PASS
+- clean full-DNA decode: PASS
+- reconstructed UTF-8 bytes equal clean canonical text bytes: PASS
+
+3. Audio
+- synthetic 0.25 s mono 8 kHz WAV input
+- canonicalized with ffmpeg to PCM16 22.05 kHz stereo: PASS
+- clean full-bitstream decode: PASS
+- reconstructed WAV: PASS
+- decoded source bits == encoded canonical PCM bits: PASS
+
+4. Mixed audio corruption
+- 1 critical bit flip + 1 extended bit flip + 10 source bit flips
+- Critical Header recovery: UNIQUE in seeded test
+- Extended Metadata: DAMAGED
+- reconstructed WAV: PASS
+- source-bit errors preserved in reconstructed canonical audio: 10
+
+5. Critical CRC geometry
+- embedded weight-8 zero-syndrome witness check: PASS
+- full weight-1..7 exhaustive distance certificate function is retained from the v14 architecture but is not run automatically by the UI
+
+External Stress Test
+--------------------
+- clean full-bitstream download available
+- modified full-bitstream .txt upload available
+- exact-length check enforces substitution-only testing
+- Run Uploaded Bitstream Stress Test action available
+- reconstructed output is downloadable when structurally possible
+
+Scientific boundaries
+---------------------
+- UNIQUE is a metadata-recovery result.
+- Structural *_GUESSED fallback is salvage, not a universal correction guarantee.
+- Extended metadata damage never blocks reconstruction.
+- Insertions, deletions, truncation and arbitrary framing loss remain unsupported.
+- Audio/image reconstructed files are fresh canonical containers, not byte-identical copies of the original compressed input container.

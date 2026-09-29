@@ -16,7 +16,7 @@ v17 keeps the v14 architecture as the foundation and extends it to three media f
 
 Core goals
 ----------
-1. Keep Seo R∞-P8 local mapping (4 bits -> 2 nt, 8 periodic mapping columns).
+1. Keep R∞-P8 local mapping (4 bits -> 2 nt, 8 periodic mapping columns).
 2. Keep v14 critical-header recovery: known MAGIC/VERSION repair + CRC32
    syndrome + meet-in-the-middle + semantic filtering, then labeled best-effort
    structural guessing if strict recovery is AMBIGUOUS/FAIL.
@@ -217,7 +217,7 @@ FLAG_LABELS = [
 
 
 # =============================================================================
-# Seo R∞-P8 local mapping
+# R∞-P8 local mapping
 # =============================================================================
 
 SEO_RINF_P8 = {
@@ -1947,13 +1947,13 @@ def update_latest_analysis(dec: DecodedArtifact, encoded: EncodedArtifact, conte
 
 
 def main() -> None:
-    st.set_page_config(page_title="Graceful DNA Data Analysis v17", layout="wide")
+    st.set_page_config(page_title="Hierarchical Metadata Recovery and Media-Aware Content Reconstruction for DNA Data Storage", layout="wide")
     init_state()
-    st.title("Graceful-Degradation DNA Data Analysis — v17")
-    st.caption("Recoverable 144-bit critical header + nonblocking 160-bit extended metadata + primary canonical image/text/audio source | Seo R∞-P8")
+    st.title("Hierarchical Metadata Recovery and Media-Aware Content Reconstruction for DNA Data Storage")
+    st.caption("Recoverable 144-bit critical header + nonblocking 160-bit extended metadata + primary canonical image/text/audio source | R∞-P8")
 
     st.divider(); st.header("0. Overview")
-    st.code("H_critical (144 bits, recoverable) || H_extended (160 bits, nonblocking) || C_canonical (primary graceful content)", language=None)
+    st.code("H_critical (144 bits, recoverable) || H_extended (160 bits, nonblocking) || C_canonical (primary canonical content)", language=None)
     st.dataframe(pd.DataFrame([
         ["Critical Header", "144 bits / 72 nt", "Required for reconstruction", "CRC/MITM recovery first; deterministic structural guess if AMBIGUOUS/FAIL"],
         ["Extended Metadata", "160 bits / 80 nt", "Not required for reconstruction", "VALID/DAMAGED; never blocks reconstruction"],
@@ -1967,10 +1967,10 @@ def main() -> None:
         ["Text", "UTF-8 bytes", "UTF-8 text", "content remains readable/openable after noisy reconstruction when structurally possible"],
         ["Audio", f"PCM16 {AUDIO_RATE} Hz stereo", "WAV", f"first {AUDIO_MAX_SECONDS} s maximum"],
     ], columns=["Media", "Primary canonical source", "Fresh reconstruction", "Demo policy"]), use_container_width=True, hide_index=True)
-    st.info("Critical metadata is recovered first. If strict recovery is AMBIGUOUS/FAIL, v17 attempts deterministic structural salvage. Extended metadata remains nonblocking.")
+    st.info("Critical metadata is recovered first. If strict recovery is AMBIGUOUS/FAIL, this version attempts deterministic structural salvage. Extended metadata remains nonblocking.")
 
     st.divider(); st.header("1. Encode")
-    st.caption("Upload a supported image, text, or audio file → primary canonical source → fixed metadata → Seo R∞-P8 DNA.")
+    st.caption("Upload a supported image, text, or audio file → primary canonical source → fixed metadata → R∞-P8 DNA.")
     upload = st.file_uploader("Upload file", type=ALL_UPLOAD_EXTENSIONS, key="v17_input")
     if upload is not None:
         try:
@@ -2003,7 +2003,7 @@ def main() -> None:
             st.dataframe(pd.DataFrame([
                 ["Critical Header", 0, CRITICAL_BITS - 1, CRITICAL_BITS, "recoverable / reconstruction-critical"],
                 ["Extended Metadata", CRITICAL_BITS, FIXED_META_BITS - 1, EXT_BITS, "nonblocking descriptive metadata"],
-                ["Primary Canonical Source", FIXED_META_BITS, len(encoded.full_bits) - 1, len(encoded.source_bits), f"graceful {canonical.kind} content"],
+                ["Primary Canonical Source", FIXED_META_BITS, len(encoded.full_bits) - 1, len(encoded.source_bits), f"canonical {canonical.kind} content"],
             ], columns=["Region", "Start bit", "End bit", "Length", "Role"]), use_container_width=True, hide_index=True)
             d1, d2, d3, d4 = st.columns(4)
             stem = Path(upload.name).stem
